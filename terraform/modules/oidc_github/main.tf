@@ -153,6 +153,23 @@ data "aws_iam_policy_document" "deploy_iam_scoped" {
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/finops-*"
     ]
   }
+
+  # Terraform state includes the OIDC provider itself, so plan/refresh from
+  # the deploy role must be able to read (and tag) it.
+  statement {
+    sid = "OidcProviderManage"
+    actions = [
+      "iam:GetOpenIDConnectProvider",
+      "iam:TagOpenIDConnectProvider",
+      "iam:UntagOpenIDConnectProvider",
+      "iam:UpdateOpenIDConnectProviderThumbprint",
+      "iam:AddClientIDToOpenIDConnectProvider",
+      "iam:RemoveClientIDFromOpenIDConnectProvider"
+    ]
+    resources = [
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
+    ]
+  }
 }
 
 resource "aws_iam_policy" "deploy_iam_scoped" {
