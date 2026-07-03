@@ -33,3 +33,9 @@ variable "alert_email" {
   type        = string
   # no default on purpose - set in terraform.tfvars (gitignored)
 }
+
+variable "cur_bucket_name" {
+  description = "Globally unique bucket for CUR delivery + Athena results"
+  type        = string
+  default     = "rjnoord-finops-cur"
+}
