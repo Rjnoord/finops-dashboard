@@ -27,10 +27,10 @@ variable "state_bucket_name" {
   default = "rjnoord-finops-tfstate"
 }
 
-#checkov:skip=CKV_AWS_18:Single-account personal lab bucket; access logging cost/noise isn't justified here
-#checkov:skip=CKV_AWS_144:Personal lab, single region; cross-region replication is disproportionate cost for tfstate
-#checkov:skip=CKV2_AWS_62:Personal lab bucket with no downstream consumers for event notifications
 resource "aws_s3_bucket" "tfstate" {
+  #checkov:skip=CKV_AWS_18:Single-account personal lab bucket; access logging cost/noise isn't justified here
+  #checkov:skip=CKV_AWS_144:Personal lab, single region; cross-region replication is disproportionate cost for tfstate
+  #checkov:skip=CKV2_AWS_62:Personal lab bucket with no downstream consumers for event notifications
   bucket = var.state_bucket_name
 
   lifecycle {
@@ -83,8 +83,8 @@ resource "aws_s3_bucket_public_access_block" "tfstate" {
   restrict_public_buckets = true
 }
 
-#checkov:skip=CKV_AWS_119:AWS-owned encryption key is sufficient for a lock table with no sensitive data; CMK adds cost with no benefit here
 resource "aws_dynamodb_table" "tflock" {
+  #checkov:skip=CKV_AWS_119:AWS-owned encryption key is sufficient for a lock table with no sensitive data; CMK adds cost with no benefit here
   name         = "finops-tf-lock"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
