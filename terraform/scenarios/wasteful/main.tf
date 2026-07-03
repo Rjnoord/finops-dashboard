@@ -38,6 +38,7 @@ variable "create_idle_instance" {
 
 resource "aws_ebs_volume" "orphan" {
   #checkov:skip=CKV_AWS_189:Simulation resource, deliberately unencrypted-by-CMK and untagged
+  #checkov:skip=CKV_AWS_3:Deliberately misconfigured — this volume exists to be flagged by the collectors and holds no data
   availability_zone = "us-east-1a"
   size              = 10
   type              = "gp3"
@@ -45,6 +46,7 @@ resource "aws_ebs_volume" "orphan" {
 }
 
 resource "aws_eip" "orphan" {
+  #checkov:skip=CKV2_AWS_19:The unattached EIP IS the simulation — the orphaned_storage collector exists to catch exactly this
   domain = "vpc"
   # Allocated but never associated — pure waste the collector should price.
 }
@@ -65,6 +67,7 @@ resource "aws_instance" "idle" {
   #checkov:skip=CKV_AWS_8:Simulation resource kept deliberately minimal
   #checkov:skip=CKV_AWS_79:Simulation resource kept deliberately minimal
   #checkov:skip=CKV_AWS_49:Simulation resource kept deliberately minimal
+  #checkov:skip=CKV2_AWS_41:Idle simulation box needs no instance profile — it does nothing by design
   count         = var.create_idle_instance ? 1 : 0
   ami           = data.aws_ami.al2023[0].id
   instance_type = "t3.micro"
