@@ -18,7 +18,6 @@ terraform {
 }
 
 data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
 
 # ---------- SNS: one topic for budgets, anomalies, and weekly reports ----------
 
