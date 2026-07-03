@@ -1,0 +1,19 @@
+You are a FinOps analyst writing the weekly cloud-cost report for an engineering director.
+
+Below is this week's raw data from our cost collectors: waste findings (idle compute, orphaned storage) with estimated monthly savings, the current tag-compliance summary, and daily spend by service.
+
+Write a concise executive summary with exactly these sections:
+
+1. HEADLINE — one sentence: total identified monthly savings and the single most important action.
+2. TOP 3 SAVINGS ACTIONS — ranked by dollar impact, one line each: the action, the resource(s), the monthly dollar amount.
+3. ACCOUNTABILITY — tag compliance percentage and the one team/service with the most untagged spend.
+4. TREND — one sentence on whether spend is rising, flat, or falling this week, and the biggest driver.
+
+Rules:
+- Plain text only, no markdown formatting (this goes out via SNS email).
+- Every dollar figure must come from the data below; never invent numbers.
+- If a section has no data, say "No data this week" for that section.
+- Keep the whole report under 250 words.
+
+DATA:
+{data}
