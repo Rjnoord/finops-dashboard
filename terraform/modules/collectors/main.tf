@@ -161,6 +161,7 @@ resource "aws_lambda_function" "collector" {
   #checkov:skip=CKV_AWS_272:Code signing is disproportionate for a single-dev lab; CI provenance covers integrity
   #checkov:skip=CKV_AWS_173:Env vars hold table/tag names only — nothing secret to encrypt with a CMK
   #checkov:skip=CKV_AWS_50:X-Ray tracing adds cost; structured logs cover observability at this scale
+  #checkov:skip=CKV_AWS_115:Account concurrency quota is 10 (the AWS minimum unreserved pool), so per-function reservations are impossible; daily EventBridge invocation makes runaway concurrency a non-risk
   for_each = local.collectors
 
   function_name    = "finops-${replace(each.key, "_", "-")}"
@@ -173,8 +174,6 @@ resource "aws_lambda_function" "collector" {
   architectures    = ["arm64"] # ~20% cheaper per GB-second than x86
   timeout          = 120
   memory_size      = 256
-
-  reserved_concurrent_executions = 1 # daily batch job — never needs to fan out
 
   dead_letter_config {
     target_arn = aws_sqs_queue.dlq[each.key].arn
