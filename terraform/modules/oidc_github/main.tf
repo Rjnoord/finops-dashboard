@@ -5,6 +5,16 @@
 # This is the zero-stored-credentials pattern: GitHub mints a short-lived
 # OIDC token per workflow run; AWS STS exchanges it for temporary creds.
 
+terraform {
+  required_version = ">= 1.7"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_openid_connect_provider" "github" {

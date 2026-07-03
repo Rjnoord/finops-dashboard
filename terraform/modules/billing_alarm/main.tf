@@ -4,6 +4,17 @@
 # Also enable "Receive Billing Alerts" once in the console:
 # Billing > Billing Preferences.
 
+terraform {
+  required_version = ">= 1.7"
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      version               = "~> 5.0"
+      configuration_aliases = [aws]
+    }
+  }
+}
+
 resource "aws_sns_topic" "billing" {
   name = "finops-billing-alerts"
   tags = { Project = "finops-dashboard" }
