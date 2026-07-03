@@ -17,3 +17,10 @@ module "billing_alarm" {
   alert_email   = var.alert_email
   threshold_usd = 10
 }
+
+module "cur_athena" {
+  source = "../../modules/cur_athena"
+
+  cur_bucket_name = var.cur_bucket_name
+  aws_region      = var.aws_region
+}
