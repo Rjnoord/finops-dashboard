@@ -107,6 +107,10 @@ platform, unprompted, produced:
 | **Visibility** | Cost Anomaly Detection surfaced **2 real anomalies**; daily spend by service cached in DynamoDB for the dashboard |
 | **Reporting** | The Bedrock summarizer turned 4 findings + 3 cost rows into an executive summary and delivered it via SNS email, end to end |
 
+The dashboard, live against the account after the simulation run:
+
+![FinOps dashboard showing $8.00/mo identified savings, 51% tag compliance, 3 open findings, and 5 detected cost anomalies](docs/img/dashboard-full.png)
+
 Architecture detail and the five key design decisions (CUR vs Cost Explorer,
 OIDC vs stored keys, DynamoDB vs RDS, Streamlit, plan/apply split):
 [docs/architecture.md](docs/architecture.md).
