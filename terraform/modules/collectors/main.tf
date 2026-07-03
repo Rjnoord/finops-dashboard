@@ -20,8 +20,6 @@ terraform {
   }
 }
 
-data "aws_caller_identity" "current" {}
-
 locals {
   collectors = {
     idle_ec2 = {
