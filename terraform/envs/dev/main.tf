@@ -28,3 +28,11 @@ module "cur_athena" {
 module "collectors" {
   source = "../../modules/collectors"
 }
+
+module "alerting" {
+  source = "../../modules/alerting"
+
+  alert_email         = var.alert_email
+  findings_table_name = module.collectors.table_name
+  findings_table_arn  = module.collectors.table_arn
+}

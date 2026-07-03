@@ -32,3 +32,11 @@ output "findings_table" {
 output "collector_functions" {
   value = module.collectors.function_names
 }
+
+output "alerts_topic_arn" {
+  value = module.alerting.alerts_topic_arn
+}
+
+output "reporter_function" {
+  value = module.alerting.reporter_function
+}
