@@ -61,11 +61,11 @@ jobs:
 
       - name: Ruff
         if: steps.has_python.outputs.present == 'true'
-        run: ruff check src
+        run: ruff check src tests
 
       - name: Black
         if: steps.has_python.outputs.present == 'true'
-        run: black --check src
+        run: black --check src tests
 
       - name: Pytest
         if: steps.has_python.outputs.present == 'true'

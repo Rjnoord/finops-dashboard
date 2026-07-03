@@ -66,6 +66,26 @@ resource "aws_iam_role_policy_attachment" "plan_readonly" {
   policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
 }
 
+# ReadOnlyAccess does not cover the Cost and Usage Report API, which
+# terraform plan needs to refresh the CUR definition in state.
+data "aws_iam_policy_document" "plan_cur_read" {
+  statement {
+    sid       = "CurRead"
+    actions   = ["cur:DescribeReportDefinitions", "cur:ListTagsForResource"]
+    resources = ["arn:aws:cur:us-east-1:${data.aws_caller_identity.current.account_id}:definition/*"]
+  }
+}
+
+resource "aws_iam_policy" "plan_cur_read" {
+  name   = "finops-plan-cur-read"
+  policy = data.aws_iam_policy_document.plan_cur_read.json
+}
+
+resource "aws_iam_role_policy_attachment" "plan_cur_read" {
+  role       = aws_iam_role.plan.name
+  policy_arn = aws_iam_policy.plan_cur_read.arn
+}
+
 # Plan needs to read/write state objects and take the state lock.
 data "aws_iam_policy_document" "state_access" {
   statement {
