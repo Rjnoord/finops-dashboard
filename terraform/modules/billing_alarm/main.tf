@@ -16,8 +16,9 @@ terraform {
 }
 
 resource "aws_sns_topic" "billing" {
-  name = "finops-billing-alerts"
-  tags = { Project = "finops-dashboard" }
+  name              = "finops-billing-alerts"
+  kms_master_key_id = "alias/aws/sns"
+  tags              = { Project = "finops-dashboard" }
 }
 
 resource "aws_sns_topic_subscription" "email" {
