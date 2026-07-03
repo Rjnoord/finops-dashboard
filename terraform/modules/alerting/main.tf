@@ -37,8 +37,15 @@ resource "aws_sns_topic_subscription" "email" {
 # so the topic policy must let them in (scoped to this account).
 data "aws_iam_policy_document" "alerts_topic" {
   statement {
-    sid       = "OwnerFullAccess"
-    actions   = ["sns:*"]
+    # SNS rejects "sns:*" in topic policies ("action out of service scope"),
+    # so enumerate the topic-scoped actions AWS's own default policy grants.
+    sid = "OwnerFullAccess"
+    actions = [
+      "sns:GetTopicAttributes", "sns:SetTopicAttributes",
+      "sns:AddPermission", "sns:RemovePermission",
+      "sns:Subscribe", "sns:ListSubscriptionsByTopic",
+      "sns:Publish", "sns:DeleteTopic"
+    ]
     resources = [aws_sns_topic.alerts.arn]
     principals {
       type        = "AWS"
