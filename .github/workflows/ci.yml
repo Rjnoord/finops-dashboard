@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/envs/dev
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive ../../
+
+      - name: Terraform init (no backend)
+        run: terraform init -backend=false -input=false
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: TFLint
+        uses: terraform-linters/setup-tflint@v4
+      - run: tflint --init && tflint --recursive
+        working-directory: .
+
+      - name: Checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: terraform
+          quiet: true
+          soft_fail: false
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for Python code
+        id: has_python
+        run: echo "present=$( [ -d src ] && echo true || echo false )" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-python@v5
+        if: steps.has_python.outputs.present == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        if: steps.has_python.outputs.present == 'true'
+        run: pip install ruff black pytest moto boto3
+
+      - name: Ruff
+        if: steps.has_python.outputs.present == 'true'
+        run: ruff check src
+
+      - name: Black
+        if: steps.has_python.outputs.present == 'true'
+        run: black --check src
+
+      - name: Pytest
+        if: steps.has_python.outputs.present == 'true'
+        run: pytest tests -v
