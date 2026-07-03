@@ -24,3 +24,7 @@ module "cur_athena" {
   cur_bucket_name = var.cur_bucket_name
   aws_region      = var.aws_region
 }
+
+module "collectors" {
+  source = "../../modules/collectors"
+}

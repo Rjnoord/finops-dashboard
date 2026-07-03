@@ -24,3 +24,11 @@ output "cur_table" {
 output "cur_crawler" {
   value = module.cur_athena.crawler_name
 }
+
+output "findings_table" {
+  value = module.collectors.table_name
+}
+
+output "collector_functions" {
+  value = module.collectors.function_names
+}
