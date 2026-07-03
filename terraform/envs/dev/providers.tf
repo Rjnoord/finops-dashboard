@@ -17,6 +17,7 @@ provider "aws" {
       Environment = "dev"
       ManagedBy   = "terraform"
       Owner       = "rjnoord"
+      CostCenter  = "engineering"
     }
   }
 }
@@ -32,6 +33,7 @@ provider "aws" {
       Environment = "dev"
       ManagedBy   = "terraform"
       Owner       = "rjnoord"
+      CostCenter  = "engineering"
     }
   }
 }

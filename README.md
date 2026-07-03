@@ -92,7 +92,24 @@ finops-dashboard/
 | 4 | Lambda collectors: idle EC2, orphaned storage, tag compliance, cost aggregates | ✅ |
 | 5 | Budgets + Cost Anomaly Detection + Bedrock weekly exec summary | ✅ |
 | 6 | Streamlit dashboard | ✅ |
-| 7 | Wasteful-resource simulation, findings writeup, decision log | ⬜ |
+| 7 | Wasteful-resource simulation, findings writeup, decision log | ✅ |
+
+## Results — the simulation (2026-07-03)
+
+`terraform/scenarios/wasteful` seeded deliberately untagged waste (an unattached
+EBS volume and an idle Elastic IP, local state, destroyed after the run). The
+platform, unprompted, produced:
+
+| Capability | Result |
+|---|---|
+| **Action** | `orphaned_storage` priced **$8.00/month across 3 resources** — both seeded resources plus a pre-existing idle Elastic IP nobody knew about |
+| **Accountability** | Tag compliance **0% → 50.6%** (81 resources) after one enforcement change: adding `CostCenter` to the provider's `default_tags` and re-applying |
+| **Visibility** | Cost Anomaly Detection surfaced **2 real anomalies**; daily spend by service cached in DynamoDB for the dashboard |
+| **Reporting** | The Bedrock summarizer turned 4 findings + 3 cost rows into an executive summary and delivered it via SNS email, end to end |
+
+Architecture detail and the five key design decisions (CUR vs Cost Explorer,
+OIDC vs stored keys, DynamoDB vs RDS, Streamlit, plan/apply split):
+[docs/architecture.md](docs/architecture.md).
 
 ## Setup (reproduce from scratch)
 
