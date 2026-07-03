@@ -71,7 +71,7 @@ resource "aws_iam_role_policy_attachment" "plan_readonly" {
 data "aws_iam_policy_document" "plan_cur_read" {
   statement {
     sid       = "CurRead"
-    actions   = ["cur:DescribeReportDefinitions"]
+    actions   = ["cur:DescribeReportDefinitions", "cur:ListTagsForResource"]
     resources = ["arn:aws:cur:us-east-1:${data.aws_caller_identity.current.account_id}:definition/*"]
   }
 }
