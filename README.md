@@ -89,9 +89,9 @@ finops-dashboard/
 | 1 | Remote state backend, GitHub OIDC roles, billing alarm | ✅ |
 | 2 | CI pipeline: lint/scan/test on PR, plan-on-PR, apply-on-merge | ✅ |
 | 3 | CUR → S3 → Athena with saved cost-analysis queries | ✅ |
-| 4 | Lambda collectors: idle EC2, orphaned storage, tag compliance, cost aggregates | 🔜 |
-| 5 | Budgets + Cost Anomaly Detection + Bedrock weekly exec summary | ⬜ |
-| 6 | Streamlit dashboard | ⬜ |
+| 4 | Lambda collectors: idle EC2, orphaned storage, tag compliance, cost aggregates | ✅ |
+| 5 | Budgets + Cost Anomaly Detection + Bedrock weekly exec summary | ✅ |
+| 6 | Streamlit dashboard | ✅ |
 | 7 | Wasteful-resource simulation, findings writeup, decision log | ⬜ |
 
 ## Setup (reproduce from scratch)
